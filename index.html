@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ashley Masimo, QA Engineer. Manual, API, and mobile testing portfolio with projects, sample test cases, and resume.">
+<title>Ashley Masimo QA Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f5f7;
+    --surface: #ffffff;
+    --fg: #15202b;
+    --muted: #55626f;
+    --line: #d8dee4;
+    --accent: #0b6a88;
+    --accent-ink: #ffffff;
+    --pass: #17713f;
+    --pass-bg: #e2f3e9;
+    --fail: #a3332b;
+    --fail-bg: #f8e4e1;
+    --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10161c; --surface: #18212a; --fg: #e8edf1; --muted: #9aa8b5; --line: #2b3945;
+      --accent: #5cc3e0; --accent-ink: #08222b;
+      --pass: #6fd49a; --pass-bg: #163626; --fail: #f0948c; --fail-bg: #3b1f1c;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10161c; --surface: #18212a; --fg: #e8edf1; --muted: #9aa8b5; --line: #2b3945;
+    --accent: #5cc3e0; --accent-ink: #08222b;
+    --pass: #6fd49a; --pass-bg: #163626; --fail: #f0948c; --fail-bg: #3b1f1c;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 32px 56px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+  h1 { font-size: clamp(2.2rem, 7vw, 3.4rem); letter-spacing: -0.02em; }
+  h2 { font-size: 1.5rem; letter-spacing: -0.01em; }
+  h3 { font-size: 1.2rem; }
+  p { margin: 0; max-width: 65ch; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .mono { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+
+  header { display: flex; flex-direction: column; gap: 16px; }
+  .role { font-size: 1.2rem; color: var(--muted); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+    border-radius: 6px; text-decoration: none; font: 600 0.95rem var(--font-body); cursor: pointer;
+  }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn:hover { border-color: var(--accent); }
+
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .stat b { font: 700 1.9rem var(--font-display); font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--muted); font-size: 0.92rem; line-height: 1.35; }
+
+  section { display: flex; flex-direction: column; gap: 18px; }
+  .sec-head { display: flex; flex-direction: column; gap: 4px; }
+
+  .case { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .case-top { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: space-between; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font: 500 0.75rem var(--font-mono); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+  .case ul { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 6px; }
+
+  .defect { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--fail); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .pill { font: 500 0.75rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+  .pill.fail { background: var(--fail-bg); color: var(--fail); }
+  .pill.pass { background: var(--pass-bg); color: var(--pass); }
+  dl { margin: 0; display: grid; grid-template-columns: 110px 1fr; gap: 10px 16px; }
+  dt { font: 500 0.78rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding-top: 4px; }
+  dd { margin: 0; min-width: 0; }
+  @media (max-width: 520px) { dl { grid-template-columns: 1fr; gap: 2px; } dd { margin-bottom: 10px; } }
+
+  .job { display: flex; flex-direction: column; gap: 10px; }
+  .job-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
+  .job ul { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 6px; }
+
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .skill-group { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  footer { border-top: 1px solid var(--line); padding-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .copyrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .email { font-family: var(--font-mono); font-size: 0.95rem; overflow-wrap: anywhere; user-select: all; }
+  #copied { color: var(--pass); font-size: 0.9rem; min-height: 1.2em; }
+
+  .method { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .method-item { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+  .method-item h3 { font-size: 1.05rem; }
+  .method-item p { color: var(--muted); font-size: 0.97rem; }
+
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  th { font: 500 0.75rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td.id { font-family: var(--font-mono); font-size: 0.82rem; white-space: nowrap; }
+  .note { color: var(--muted); font-size: 0.95rem; }
+  .edu { display: flex; flex-direction: column; gap: 4px; }
+
+  .player { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: var(--fg); color: var(--bg); border: 1px solid var(--line); border-radius: 8px; display: grid; place-items: center; overflow: hidden; }
+  .play { width: 76px; height: 76px; border-radius: 50%; border: 0; background: var(--accent); cursor: pointer; display: grid; place-items: center; }
+  .play::before { content: ""; border-style: solid; border-width: 13px 0 13px 21px; border-color: transparent transparent transparent var(--accent-ink); margin-left: 5px; }
+  .player-msg { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; padding: 16px; background: var(--fg); color: var(--bg); }
+  .player-msg h3 { font-size: clamp(1.1rem, 4vw, 1.6rem); }
+  .player-msg p { color: inherit; opacity: 0.8; }
+  body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="mono">QA Engineer / Rockville, Maryland</span>
+    <h1>Ashley Masimo</h1>
+    <p class="role">Manual and API testing for web, mobile, and financial systems, with a growing automation toolkit in Python and TypeScript.</p>
+    <p>I spent almost two years testing a platform that handles client payments and project costs, plus a CRM and internal tools. I write clear test cases, validate data with SQL, and report bugs so a developer can reproduce them on the first try. Open to remote work or relocation.</p>
+    <div class="links">
+      <a class="btn primary" href="https://github.com/ashleymasimo18-cloud" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/ashleymasimo" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="Ashley_Masimo_Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+      <a class="btn" href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <section aria-labelledby="vid-h">
+    <div class="sec-head"><span class="mono">Intro</span><h2 id="vid-h">Watch my intro video</h2></div>
+    <div class="player" id="player">
+      <button class="play" id="play" type="button" aria-label="Play intro video"></button>
+      <div class="player-msg" id="pmsg" role="status" aria-live="polite" hidden>
+        <h3 id="ptitle"></h3>
+        <p id="psub"></p>
+        <button class="btn" id="pretry" type="button" hidden>Try again</button>
+      </div>
+    </div>
+    <article class="defect" id="vbug" hidden>
+      <div class="case-top"><h3>Intro video does not play</h3><span class="pill fail">Found by you</span></div>
+      <dl>
+        <dt>Steps</dt><dd>Open the portfolio. Press play on the intro video.</dd>
+        <dt>Expected</dt><dd>The video plays.</dd>
+        <dt>Actual</dt><dd>Nothing plays.</dd>
+        <dt>Severity</dt><dd>Low, but funny.</dd>
+        <dt>Status</dt><dd>Intentional. Hire me and I will report the real ones.</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section aria-labelledby="about-h">
+    <div class="sec-head"><span class="mono">About</span><h2 id="about-h">How I got here</h2></div>
+    <p>I studied Information Technology at Montgomery College, then earned a QA Engineering Certificate through TripleTen in 2026. At Experts Remodel I tested software that handles real money and real client records, which taught me to check the details that are easy to skip, like dates, totals, and statuses. I like finding the exact step where something breaks and writing it up so it can be fixed.</p>
+  </section>
+
+  <section aria-labelledby="care-h">
+    <div class="sec-head"><span class="mono">Values</span><h2 id="care-h">What I care about</h2></div>
+    <div class="method">
+      <div class="method-item"><h3>Teamwork</h3><p>The best work happens when everyone brings a piece and we solve the problem together.</p></div>
+      <div class="method-item"><h3>Accessibility</h3><p>Software should work for everyone, including people who use assistive technology.</p></div>
+      <div class="method-item"><h3>Protecting people from mistakes</h3><p>When software handles someone's money or records, a small error can cause real stress. I like being the one who catches it first.</p></div>
+      <div class="method-item"><h3>Always learning</h3><p>I keep adding skills, from API testing to automation to security basics, so I can be useful in more than one part of a team.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="sum-h">
+    <div class="sec-head"><span class="mono">Run summary</span><h2 id="sum-h">The numbers behind the work</h2></div>
+    <div class="summary">
+      <div class="stat"><b>500+</b><span>test cases written across my QA work</span></div>
+      <div class="stat"><b>100+</b><span>bugs found and documented</span></div>
+      <div class="stat"><b>61</b><span>API test cases in Postman, 32 bugs found</span></div>
+      <div class="stat"><b>~80%</b><span>less manual run time after automating a regression suite</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="how-h">
+    <div class="sec-head"><span class="mono">Approach</span><h2 id="how-h">How I test</h2></div>
+    <div class="method">
+      <div class="method-item"><h3>Start with the requirement</h3><p>I read the requirement or acceptance criteria first, and ask when something is unclear before I write a single case.</p></div>
+      <div class="method-item"><h3>Design the cases</h3><p>I use boundary value analysis and equivalence partitioning so a small set of cases covers the real risk, and I add the negative cases people forget.</p></div>
+      <div class="method-item"><h3>Check beneath the screen</h3><p>I compare what the interface shows with what the API returns and what is stored in the database, using Postman and SQL.</p></div>
+      <div class="method-item"><h3>Report so it can be reproduced</h3><p>Each bug gets steps, environment, expected result, and actual result, so a developer can reproduce it on the first try.</p></div>
+      <div class="method-item"><h3>Retest and regress</h3><p>I verify the fix, then rerun the nearby cases to make sure nothing else broke.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="proj-h">
+    <div class="sec-head"><span class="mono">Test cases</span><h2 id="proj-h">Projects</h2></div>
+
+    <article class="case">
+      <div class="case-top"><h3>Urban Grocers API testing</h3><div class="tags"><span class="tag">Postman</span><span class="tag">SQL</span><span class="tag">Jira</span></div></div>
+      <p>Designed and ran 61 test cases across two suites for a grocery delivery API, then cross-checked results against the database with SQL.</p>
+      <ul>
+        <li>Kits and Products suite: 26 cases, 12 bugs.</li>
+        <li>Fast Delivery suite: 35 cases, 20 bugs.</li>
+        <li>Every bug logged in Jira with steps, expected result, and actual result.</li>
+      </ul>
+      <a href="https://github.com/ashleymasimo18-cloud/urban-apps-qa-testing" target="_blank" rel="noopener">View project on GitHub</a>
+    </article>
+
+    <article class="case">
+      <div class="case-top"><h3>Urban Routes automation</h3><div class="tags"><span class="tag">Python</span><span class="tag">Pytest</span><span class="tag">Selenium</span><span class="tag">GitHub Actions</span></div></div>
+      <p>Turned a manual regression pass for a ride-ordering web app into an automated Pytest suite built with the Page Object Model and explicit waits, run on GitHub Actions. It cut manual run time by roughly 80%.</p>
+      <a href="https://github.com/ashleymasimo18-cloud/urban-apps-qa-testing" target="_blank" rel="noopener">View project on GitHub</a>
+    </article>
+
+    <article class="case">
+      <div class="case-top"><h3>Urban Lunch mobile checklist</h3><div class="tags"><span class="tag">Android</span><span class="tag">Manual</span><span class="tag">Jira</span></div></div>
+      <p>Wrote a 44-case checklist from product requirements and Figma layouts, then tested a food ordering app on a Pixel 5 emulator. Coverage included pickup location, dish selection, order confirmation, tracking, and delivery. Found 5 bugs, each linked to a Jira ticket.</p>
+      <a href="https://github.com/ashleymasimo18-cloud/urban-apps-qa-testing" target="_blank" rel="noopener">View project on GitHub</a>
+    </article>
+
+    <article class="case">
+      <div class="case-top"><h3>Playwright regression suite for Dynamics 365 Sales</h3><div class="tags"><span class="tag">Playwright</span><span class="tag">TypeScript</span></div></div>
+      <p>Built a TypeScript framework against a D365 Sales trial environment, covering the login flow, Account record creation, and form validation. I chose TypeScript because it appears in most of the QA postings I read.</p>
+      <a href="https://github.com/ashleymasimo18-cloud" target="_blank" rel="noopener">See my GitHub profile</a>
+    </article>
+
+    <article class="case">
+      <div class="case-top"><h3>API and SQL validation framework</h3><div class="tags"><span class="tag">Python</span><span class="tag">Pytest</span><span class="tag">SQLite</span></div></div>
+      <p>A Pytest framework that tests the Fake Store API and verifies the data against a local SQLite snapshot, built to sharpen my SQL for backend validation.</p>
+      <a href="https://github.com/ashleymasimo18-cloud/python-api-sql-testing" target="_blank" rel="noopener">View project on GitHub</a>
+    </article>
+  </section>
+
+  <section aria-labelledby="tc-h">
+    <div class="sec-head"><span class="mono">Sample test design</span><h2 id="tc-h">Login flow test cases</h2></div>
+    <p class="note">A sample I wrote to show my case format, designed for SauceDemo, a public practice site. These are designed cases, not recorded results.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>ID</th><th>Scenario</th><th>Steps</th><th>Expected result</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td class="id">LOGIN-01</td><td>Valid login</td><td>Enter a valid username and password. Select Login.</td><td>The Products page opens.</td><td>Positive</td></tr>
+          <tr><td class="id">LOGIN-02</td><td>Wrong password</td><td>Enter a valid username and a wrong password. Select Login.</td><td>An error says the credentials do not match. The user stays on the login page.</td><td>Negative</td></tr>
+          <tr><td class="id">LOGIN-03</td><td>Locked-out account</td><td>Enter the locked-out user's credentials. Select Login.</td><td>An error says the account is locked out. No session starts.</td><td>Negative</td></tr>
+          <tr><td class="id">LOGIN-04</td><td>Empty username</td><td>Leave the username blank, enter a password. Select Login.</td><td>A required-field error appears for the username.</td><td>Negative</td></tr>
+          <tr><td class="id">LOGIN-05</td><td>Empty password</td><td>Enter a username, leave the password blank. Select Login.</td><td>A required-field error appears for the password.</td><td>Negative</td></tr>
+          <tr><td class="id">LOGIN-06</td><td>Very long username</td><td>Paste a 500-character string as the username. Select Login.</td><td>The page does not crash. The credentials error appears.</td><td>Boundary</td></tr>
+          <tr><td class="id">LOGIN-07</td><td>Logout ends the session</td><td>Log in, log out, then use the browser Back button.</td><td>The Products page does not appear without logging in again.</td><td>Security</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="api-h">
+    <div class="sec-head"><span class="mono">Sample test design</span><h2 id="api-h">API test cases</h2></div>
+    <p class="note">A sample set for the Fake Store API, a public demo e-commerce API. These are designed cases, not recorded results.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>ID</th><th>Request</th><th>Scenario</th><th>Expected result</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td class="id">API-01</td><td>GET /products</td><td>Fetch all products</td><td>Status 200 with a JSON list. Each item has an id, title, price, and category.</td><td>Positive</td></tr>
+          <tr><td class="id">API-02</td><td>GET /products/1</td><td>Fetch one product</td><td>Status 200. The returned id is 1.</td><td>Positive</td></tr>
+          <tr><td class="id">API-03</td><td>GET /products/9999</td><td>Fetch a product that does not exist</td><td>No product is returned and nothing crashes. I record the actual status code and raise it if a 404 was expected.</td><td>Negative</td></tr>
+          <tr><td class="id">API-04</td><td>GET /products?limit=3</td><td>Limit the results</td><td>Exactly 3 products come back.</td><td>Boundary</td></tr>
+          <tr><td class="id">API-05</td><td>GET /products/category/electronics</td><td>Filter by category</td><td>Every returned item belongs to the electronics category.</td><td>Positive</td></tr>
+          <tr><td class="id">API-06</td><td>POST /products</td><td>Create a product with a valid body</td><td>The response confirms the product with a new id and the values I sent.</td><td>Positive</td></tr>
+          <tr><td class="id">API-07</td><td>POST /products</td><td>Send an empty body</td><td>The request is rejected or the response clearly shows what was missing. I record the actual behavior.</td><td>Negative</td></tr>
+          <tr><td class="id">API-08</td><td>GET /products + SQL</td><td>Compare the API with a database snapshot</td><td>Product counts and prices match the SQLite snapshot.</td><td>Data check</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="def-h">
+    <div class="sec-head"><span class="mono">Defect report</span><h2 id="def-h">A bug that mattered</h2></div>
+    <article class="defect">
+      <div class="case-top"><h3>Sent invoices show the creation date instead of the sent date</h3><span class="pill fail">Found in CRM</span></div>
+      <dl>
+        <dt>Steps</dt><dd>Save an invoice as a draft. Send it later.</dd>
+        <dt>Expected</dt><dd>The invoice shows the date it was sent.</dd>
+        <dt>Actual</dt><dd>The invoice keeps the date the draft was created.</dd>
+        <dt>Check</dt><dd>I changed the date by hand and repeated the steps to confirm the behavior was consistent, then documented it for the developers.</dd>
+        <dt>Impact</dt><dd>On a payments platform, wrong dates affect records and what clients see. This pattern would have touched tens of thousands of invoices.</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section aria-labelledby="exp-h">
+    <div class="sec-head"><span class="mono">Experience</span><h2 id="exp-h">Where I have worked</h2></div>
+    <div class="job">
+      <div class="job-head"><h3>Manual QA Test Engineer, Experts Remodel</h3><span class="mono">Mar 2024 to Jan 2026</span></div>
+      <ul>
+        <li>Ran functional, regression, and exploratory testing on a financial platform used for client payments and project costs.</li>
+        <li>Tested a CRM and company websites, and three releases of internal project management software.</li>
+        <li>Validated records and calculations with SQL and tested APIs with Postman.</li>
+        <li>Documented defects in Jira and test cases in Qase, working with developers and stakeholders on requirements and acceptance criteria.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="skill-h">
+    <div class="sec-head"><span class="mono">Toolbox</span><h2 id="skill-h">Skills</h2></div>
+    <div class="skills">
+      <div class="skill-group"><span class="mono">Testing</span><p>Manual, functional, regression, exploratory, mobile, and API testing. Test case design, boundary value analysis, equivalence partitioning.</p></div>
+      <div class="skill-group"><span class="mono">Tools</span><p>Postman, SQL, Jira, Qase, Git and GitHub, Chrome DevTools.</p></div>
+      <div class="skill-group"><span class="mono">Automation</span><p>Python with Pytest and Selenium, Playwright with TypeScript, GitHub Actions.</p></div>
+    </div>
+    <div class="skills">
+      <div class="skill-group edu"><span class="mono">Education</span><p><b>QA Engineering Certificate</b>, TripleTen, 2026</p><p><b>B.S. Information Technology</b>, Montgomery College, 2024</p><p><b>Foundations of Cybersecurity</b>, Coursera, Dec 2024</p></div>
+      <div class="skill-group"><span class="mono">Currently building</span><p>Deeper SQL (joins and aggregates) and a larger Playwright and TypeScript suite.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="fun-h">
+    <div class="sec-head"><span class="mono">Off the clock</span><h2 id="fun-h">Outside of work</h2></div>
+    <div class="skills">
+      <div class="skill-group"><h3>Escape rooms</h3><p>I love them. They are close to testing with a timer: you look for what does not fit, try the move nobody expected, and work with a team to find the way through.</p></div>
+      <div class="skill-group"><h3>Gym and sleep</h3><p>I work out regularly and protect my sleep, so I show up rested and ready to work hard. It is not exciting, but it is why I stay consistent.</p></div>
+      <div class="skill-group"><h3>Music and karaoke</h3><p>Music has been with me through the best and the hardest times in my life, and it still matters a lot to me. I also enjoy a karaoke night every now and then.</p></div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <h2>Let's talk</h2>
+    <p>I am looking for a QA role where careful testing and clear reporting matter.</p>
+    <div class="copyrow">
+      <span class="email" id="email">ashley.masimo18@gmail.com</span>
+      <button class="btn" id="copy" type="button">Copy email</button>
+      <span id="copied" role="status"></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var play = document.getElementById('play');
+    var pmsg = document.getElementById('pmsg');
+    var ptitle = document.getElementById('ptitle');
+    var psub = document.getElementById('psub');
+    var pretry = document.getElementById('pretry');
+    var vbug = document.getElementById('vbug');
+    var tries = 0;
+    function start() {
+      tries += 1;
+      play.hidden = true;
+      pmsg.hidden = false;
+      pretry.hidden = true;
+      ptitle.textContent = 'Loading video...';
+      psub.textContent = '';
+      setTimeout(function () {
+        if (tries === 1) {
+          ptitle.textContent = 'You just caught your first bug.';
+          psub.textContent = 'Nothing played. That is a defect.';
+        } else {
+          ptitle.textContent = 'Still broken. Nice retest.';
+          psub.textContent = 'You would make a good tester.';
+        }
+        pretry.hidden = false;
+        vbug.hidden = false;
+      }, 900);
+    }
+    play.addEventListener('click', start);
+    pretry.addEventListener('click', start);
+  })();
+  (function () {
+    var btn = document.getElementById('copy');
+    var msg = document.getElementById('copied');
+    var email = document.getElementById('email');
+    btn.addEventListener('click', function () {
+      var text = email.textContent;
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(email);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        msg.textContent = 'Press copy on your keyboard';
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () { msg.textContent = 'Copied'; }, fallback);
+      } catch (e) { fallback(); }
+    });
+  })();
+</script>
+
+</body>
+</html>
